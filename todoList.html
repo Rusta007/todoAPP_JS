@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <h1>Todo List</h1>
+        <input type="text" name="task" id="task" placeholder="Enter a task">
+        <button onclick="addTask()" class="btn">Add</button>
+
+        <ul id="list"></ul>
+    </div>
+
+    <script>
+        tasks = [
+            {
+                id: 101,
+                task: "Buy some cocos",
+                completed: false
+            },
+            {
+                id: 102,
+                task: "Shopping",
+                completed: false
+            }, {
+                id: 103,
+                task: "Dancing",
+                completed: false
+            }, {
+                id: 104,
+                task: "Test1",
+                completed: false
+            },
+            {
+                id: 105,
+                task: "Test2",
+                completed: false
+            }
+        ]
+
+
+
+        function renderTasks() {
+            // console.log("working.......")
+            list.innerHTML = "";
+
+            tasks.forEach(task => {
+                var li = document.createElement("li");
+                li.innerHTML = task.task;
+                li.setAttribute("class", "task");
+                li.setAttribute("id", task.id);
+
+                if (task.completed) {
+                    li.style.textDecoration = "line-through";
+                }else{
+                    li.style.textDecoration = "none";
+                }
+
+                // complete button
+                var complete = document.createElement("button");
+                complete.textContent = "Completed";
+                complete.setAttribute("class", "btn");
+                complete.setAttribute("class", "complete");
+                complete.onclick = function () {
+                    task.completed = !task.completed;
+                    renderTasks();
+                }
+
+                // delete button
+                var del = document.createElement("button");
+                del.textContent = "Delete";
+                del.setAttribute("class", "btn");
+                del.setAttribute("class", "delete");
+                del.onclick = function () {
+                    tasks = tasks.filter(t => t.id != task.id);
+                    renderTasks();
+                }
+
+                li.appendChild(complete);
+                li.appendChild(del);
+                list.appendChild(li);
+            })
+
+
+        }
+
+        function addTask() {
+            var task = document.getElementById("task").value;
+            if (task == "") {
+                alert("Please enter a task");
+            } else {
+                tasks.push({
+                    id: Date.now(),
+                    task: task,
+                    completed: false
+                });
+                document.getElementById("task").value = "";
+                renderTasks();
+            }
+        }
+
+        renderTasks();
+    </script>
+
+</body>
+
+</html>
